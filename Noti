@@ -1,0 +1,86 @@
+================================================================
+ANDROID SIMPLE TOAST NOTIFICATION (KOTLIN - ERROR FREE)
+================================================================
+
+-------------------------------
+STEP 1 | MainActivity.kt
+-------------------------------
+package com.example.yourapp   // change this
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val btn = findViewById<Button>(R.id.btnToast)
+
+        btn.setOnClickListener {
+            Toast.makeText(
+                this,
+                "Hello! This is a simple notification",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
+
+
+-------------------------------
+STEP 2 | res/layout/activity_main.xml
+-------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnToast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Toast" />
+
+</LinearLayout>
+
+
+-------------------------------
+STEP 3 | AndroidManifest.xml
+-------------------------------
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.yourapp">
+
+    <application
+        android:allowBackup="true"
+        android:label="Toast App"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+
+
+-------------------------------
+STEP 4 | NOTES
+-------------------------------
+1. No internet or permissions required.
+2. No Firebase setup needed.
+3. Works offline.
+4. Toast is a temporary popup message.
+5. Good for simple alerts or debugging.
+
+================================================================
+END OF FILE
+================================================================
