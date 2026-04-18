@@ -1,0 +1,135 @@
+================================================================
+GOOGLE MAPS ANDROID FULL SETUP (KOTLIN - ERROR FREE)
+================================================================
+
+-------------------------------
+STEP 1 | local.properties
+-------------------------------
+MAPS_API_KEY=your_api_key_here
+
+
+-------------------------------
+STEP 2 | build.gradle.kts (App)
+-------------------------------
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+}
+
+android {
+    namespace = "com.example.yourapp"   // change this
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.example.yourapp"
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+
+        val mapsApiKey = project.findProperty("MAPS_API_KEY") as String? ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+    }
+}
+
+dependencies {
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+}
+
+
+-------------------------------
+STEP 3 | AndroidManifest.xml
+-------------------------------
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.yourapp">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Google Maps App"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <!-- Activity -->
+        <activity android:name=".MapsActivity" />
+
+    </application>
+</manifest>
+
+
+-------------------------------
+STEP 4 | res/layout/activity_maps.xml
+-------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+
+-------------------------------
+STEP 5 | MapsActivity.kt
+-------------------------------
+package com.example.yourapp   // change this
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var mMap: GoogleMap
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_maps)
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as? SupportMapFragment
+
+        mapFragment?.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        val chennai = LatLng(13.0827, 80.2707)
+
+        mMap.addMarker(
+            MarkerOptions().position(chennai).title("Chennai")
+        )
+
+        mMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(chennai, 12f)
+        )
+    }
+}
+
+
+================================================================
+IMPORTANT NOTES
+================================================================
+1. Replace "com.example.yourapp" with your actual package name.
+2. Make sure your folder structure matches the package.
+3. Use a valid Google Maps API key.
+4. Internet permission is automatically included in newer SDKs, 
+   but you can add if needed:
+   <uses-permission android:name="android.permission.INTERNET"/>
+5. Works with both emulator and real device.
+
+================================================================
+END OF FILE
+================================================================
