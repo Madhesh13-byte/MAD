@@ -1,0 +1,187 @@
+================================================================
+ANDROID SIMPLE CALCULATOR (KOTLIN - ERROR FREE)
+================================================================
+
+-------------------------------
+STEP 1 | MainActivity.kt
+-------------------------------
+package com.example.yourapp   // change this
+
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val num1 = findViewById<EditText>(R.id.num1)
+        val num2 = findViewById<EditText>(R.id.num2)
+        val result = findViewById<TextView>(R.id.result)
+
+        val addBtn = findViewById<Button>(R.id.btnAdd)
+        val subBtn = findViewById<Button>(R.id.btnSub)
+        val mulBtn = findViewById<Button>(R.id.btnMul)
+        val divBtn = findViewById<Button>(R.id.btnDiv)
+
+        fun getNumbers(): Pair<Double, Double>? {
+            val n1 = num1.text.toString()
+            val n2 = num2.text.toString()
+
+            if (n1.isEmpty() || n2.isEmpty()) {
+                Toast.makeText(this, "Enter both numbers", Toast.LENGTH_SHORT).show()
+                return null
+            }
+
+            return Pair(n1.toDouble(), n2.toDouble())
+        }
+
+        addBtn.setOnClickListener {
+            val nums = getNumbers()
+            nums?.let {
+                val res = it.first + it.second
+                result.text = "Result: $res"
+            }
+        }
+
+        subBtn.setOnClickListener {
+            val nums = getNumbers()
+            nums?.let {
+                val res = it.first - it.second
+                result.text = "Result: $res"
+            }
+        }
+
+        mulBtn.setOnClickListener {
+            val nums = getNumbers()
+            nums?.let {
+                val res = it.first * it.second
+                result.text = "Result: $res"
+            }
+        }
+
+        divBtn.setOnClickListener {
+            val nums = getNumbers()
+            nums?.let {
+                if (it.second == 0.0) {
+                    Toast.makeText(this, "Cannot divide by zero", Toast.LENGTH_SHORT).show()
+                } else {
+                    val res = it.first / it.second
+                    result.text = "Result: $res"
+                }
+            }
+        }
+    }
+}
+
+
+-------------------------------
+STEP 2 | res/layout/activity_main.xml
+-------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/num1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter first number"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/num2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter second number"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Result:"
+        android:textSize="20sp"
+        android:padding="10dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/btnSub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnMul"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="*" />
+
+        <Button
+            android:id="@+id/btnDiv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="/" />
+    </LinearLayout>
+
+</LinearLayout>
+
+
+-------------------------------
+STEP 3 | AndroidManifest.xml
+-------------------------------
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.yourapp">
+
+    <application
+        android:label="Calculator App"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+
+
+-------------------------------
+STEP 4 | NOTES
+-------------------------------
+1. Handles empty input safely.
+2. Prevents division by zero.
+3. Uses Double for decimal support.
+4. Shows result in TextView.
+5. Uses Toast for error messages.
+
+================================================================
+END OF FILE
+================================================================
