@@ -1,0 +1,83 @@
+================================================================
+        GOOGLE MAPS ANDROID SETUP - KOTLIN (Steps 3 to 8)
+================================================================
+
+----------------------------------------------------------------
+STEP 3 | local.properties
+----------------------------------------------------------------
+MAPS_API_KEY=your_api_key_here
+
+
+----------------------------------------------------------------
+STEP 3 | AndroidManifest.xml  (inside <application> tag)
+----------------------------------------------------------------
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="${MAPS_API_KEY}" />
+
+
+----------------------------------------------------------------
+STEP 3 | build.gradle (app)  →  inside defaultConfig { }
+----------------------------------------------------------------
+manifestPlaceholders["MAPS_API_KEY"] = properties["MAPS_API_KEY"] ?: ""
+
+
+----------------------------------------------------------------
+STEP 4 | build.gradle (app)  →  inside dependencies { }
+----------------------------------------------------------------
+implementation 'com.google.android.gms:play-services-maps:19.0.0'
+
+
+----------------------------------------------------------------
+STEP 5 | res/layout/activity_maps.xml
+----------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+
+----------------------------------------------------------------
+STEP 6 | app/src/main/java/<your_package>/MapsActivity.kt
+----------------------------------------------------------------
+package com.example.yourapp  // Replace with your actual package name
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private lateinit var mMap: GoogleMap
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_maps)
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        val location = LatLng(13.0827, 80.2707) // Example: Chennai
+        mMap.addMarker(MarkerOptions().position(location).title("Chennai"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
+    }
+}
+
+
+----------------------------------------------------------------
+STEP 7 | AndroidManifest.xml  (inside <manifest> tag)
+----------------------------------------------------------------
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
